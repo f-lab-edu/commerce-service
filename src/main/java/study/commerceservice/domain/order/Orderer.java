@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class Orderer {
     private String clphNo;
 
     @OneToMany(mappedBy = "orderer")
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 
     @Builder
     public Orderer(String name, String userId, String clphNo) {

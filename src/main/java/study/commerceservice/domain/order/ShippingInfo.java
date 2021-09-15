@@ -12,7 +12,7 @@ public class ShippingInfo {
 
     @Id
     @GeneratedValue
-    @Column(name = "shippinginfo_id")
+    @Column(name = "shipping_info_id")
     private Long id;
 
     private String message;

@@ -14,7 +14,7 @@ public class PaymentInfo {
 
     @Id
     @GeneratedValue
-    @Column(name = "paymentinfo_id")
+    @Column(name = "payment_info_id")
     private Long id;
 
     private PaymentType paymentType;

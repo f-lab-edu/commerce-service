@@ -23,6 +23,7 @@ public class OrderLine {
     private Order order;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private int quantity;
