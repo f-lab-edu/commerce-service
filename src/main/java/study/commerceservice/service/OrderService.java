@@ -1,9 +1,9 @@
-package study.service;
+package study.commerceservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.repository.OrderRepository;
+import study.commerceservice.repository.OrderRepository;
 
 @Service
 @Transactional(readOnly = true)

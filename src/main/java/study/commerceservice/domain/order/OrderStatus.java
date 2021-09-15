@@ -1,4 +1,4 @@
-package study.domain.order;
+package study.commerceservice.domain.order;
 
 public enum OrderStatus {
     PRE, COMP, CANCEL
