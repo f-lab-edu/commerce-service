@@ -17,7 +17,7 @@ public class Option {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderline_id")
+    @JoinColumn(name = "order_line_id")
     private OrderLine orderLine;
 
     public Option(String description) {
