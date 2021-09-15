@@ -1,6 +1,7 @@
 package study.domain.order;
 
 
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Orderer {
     @OneToMany(mappedBy = "orderer")
     private List<Order> orders;
 
+    @Builder
     public Orderer(String name, String userId, String clphNo) {
         this.name = name;
         this.userId = userId;

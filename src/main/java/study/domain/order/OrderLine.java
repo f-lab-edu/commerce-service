@@ -1,5 +1,7 @@
 package study.domain.order;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import study.domain.product.Product;
 
 import javax.persistence.*;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class OrderLine {
 
     @Id
@@ -26,4 +29,12 @@ public class OrderLine {
 
     @OneToMany(mappedBy = "orderLine", cascade = CascadeType.ALL)
     private List<Option> options = new ArrayList<>();
+
+    @Builder
+    public OrderLine(Product product, int quantity, long price, List<Option> options) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+        this.options = options;
+    }
 }

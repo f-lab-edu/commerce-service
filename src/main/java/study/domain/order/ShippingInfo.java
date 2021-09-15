@@ -1,8 +1,12 @@
 package study.domain.order;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
 public class ShippingInfo {
 
     @Id
@@ -17,4 +21,11 @@ public class ShippingInfo {
 
     @Embedded
     private Receiver receiver;
+
+    @Builder
+    public ShippingInfo(String message, Address address, Receiver receiver) {
+        this.message = message;
+        this.address = address;
+        this.receiver = receiver;
+    }
 }

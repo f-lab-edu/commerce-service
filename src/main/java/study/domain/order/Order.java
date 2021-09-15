@@ -1,5 +1,6 @@
 package study.domain.order;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
@@ -33,5 +34,6 @@ public class Order {
     private PaymentInfo paymentInfo;
 
     private OrderStatus orderStatus;
+
 
 }
