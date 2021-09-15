@@ -15,7 +15,7 @@ public class OrderLine {
 
     @Id
     @GeneratedValue
-    @Column(name = "orderline_id")
+    @Column(name = "order_line_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
