@@ -1,4 +1,4 @@
-package study.domain.order;
+package study.commerceservice.domain.order;
 
 import javax.persistence.Embeddable;
 

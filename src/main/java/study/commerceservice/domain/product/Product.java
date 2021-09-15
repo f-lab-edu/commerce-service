@@ -1,4 +1,4 @@
-package study.domain.product;
+package study.commerceservice.domain.product;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

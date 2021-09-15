@@ -1,9 +1,9 @@
-package study.domain.order;
+package study.commerceservice.domain.order;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import study.domain.product.Product;
+import study.commerceservice.domain.product.Product;
 
 import javax.persistence.*;
 import java.util.ArrayList;
