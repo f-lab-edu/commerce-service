@@ -1,11 +1,10 @@
-package study.service;
+package study.commerceservice.service;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import study.domain.order.Orderer;
-import study.repository.OrderRepository;
+import study.commerceservice.domain.order.Orderer;
+import study.commerceservice.repository.OrderRepository;
 
 @SpringBootTest
 @Transactional

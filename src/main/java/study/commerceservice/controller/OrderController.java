@@ -1,8 +1,8 @@
-package study.controller;
+package study.commerceservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import study.service.OrderService;
+import study.commerceservice.service.OrderService;
 
 @Controller
 @RequiredArgsConstructor
