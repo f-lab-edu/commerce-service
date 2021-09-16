@@ -7,17 +7,17 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentInfo {
+public class PaymentLine {
 
     @Id
     @GeneratedValue
-    @Column(name = "payment_info_id")
+    @Column(name = "payment_line_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
-    public PaymentInfo(PaymentType paymentType) {
+    public PaymentLine(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
 }

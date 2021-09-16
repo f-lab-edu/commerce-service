@@ -17,26 +17,22 @@ public class Order {
     @Id @GeneratedValue
     @Column(name = "order_id")
     private Long id;
-
     private String orderNumber;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderer_id")
-    private Orderer orderer;
-
+    private Long memberId;
     private LocalDateTime orderDate;
     private long totalPrice;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_line_id")
     private List<OrderLine> orderLines = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_info_id")
     private ShippingInfo shippingInfo;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_info_id")
-    private PaymentInfo paymentInfo;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_line_id")
+    private List<PaymentLine> paymentLines;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
