@@ -34,14 +34,18 @@ class OrderServiceTest {
                 .clphNo("01026688161")
                 .build();
         System.out.println("orderer1.getName() = " + orderer1.getName());
+        
         em.persist(orderer1);
 
+        System.out.println("orderer1.getId() = " + orderer1.getId());
+        
         Orderer findOrderer = queryFactory
                 .select(orderer)
                 .from(orderer)
                 .where(orderer.name.eq("욱상"))
                 .fetchOne();
 
+        System.out.println("findOrderer.getId() = " + findOrderer.getId());
         Assertions.assertThat(orderer1.getId()).isEqualTo(findOrderer.getId());
 
     }
