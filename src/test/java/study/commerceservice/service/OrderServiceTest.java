@@ -13,6 +13,7 @@ import study.commerceservice.repository.OrderRepository;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -53,13 +54,14 @@ class OrderServiceTest {
 
         // when
         Order preOrder = Order.createPreOrder(1L, orderLines);
-        orderRepository.save(preOrder);
+        Order save = orderRepository.save(preOrder);
+
+        Optional<Order> byId = orderRepository.findById(save.getId());
 
         // then
-        System.out.println("order = " + preOrder);
-        Assertions.assertThat(preOrder.getMemberId()).isEqualTo(1L);
-        Assertions.assertThat(preOrder.getOrderStatus()).isEqualTo(OrderStatus.PRE);
-        Assertions.assertThat(preOrder.getTotalPrice()).isEqualTo(35000);
+        Assertions.assertThat(byId.get().getMemberId()).isEqualTo(1L);
+        Assertions.assertThat(byId.get().getOrderStatus()).isEqualTo(OrderStatus.PRE);
+        Assertions.assertThat(byId.get().getTotalPrice()).isEqualTo(35000);
     }
 
     @Test
@@ -102,18 +104,27 @@ class OrderServiceTest {
                                         .receiver(receiver)
                                         .message("일회용수저 꼭 넣어주세요")
                                         .build();
-
+        em.persist(shippingInfo);
+        
         PaymentLine paymentLine = new PaymentLine(PaymentType.COUPON);
         List<PaymentLine> paymentLines = List.of(paymentLine);
-
+        em.persist(paymentLine);
+        
         // when
         Order order = Order.createOrder(preOrder, shippingInfo, paymentLines);
 
+        Order findOrder = orderRepository.findById(order.getId()).get();
+
+        System.out.println("findOrder.getOrderNumber() = " + findOrder.getOrderNumber());
+        
         // then
-        Assertions.assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.COMP);
-        Assertions.assertThat(order.getShippingInfo().getReceiver().getName()).isEqualTo(receiver.getName());
-        Assertions.assertThat(order.getShippingInfo().getReceiver().getClphNo()).isEqualTo(receiver.getClphNo());
-        Assertions.assertThat(order.getPaymentLines().get(0).getPaymentType()).isEqualTo(paymentLine.getPaymentType());
+        Assertions.assertThat(findOrder.getOrderStatus()).isEqualTo(OrderStatus.COMP);
+        Assertions.assertThat(findOrder.getOrderNumber()).isEqualTo(order.getOrderNumber());
+        Assertions.assertThat(findOrder.getOrderNumber()).isNotNull();
+        Assertions.assertThat(findOrder.getPaymentLines().get(0).getPaymentType()).isEqualTo(PaymentType.COUPON);
+        Assertions.assertThat(findOrder.getShippingInfo().getReceiver().getName()).isEqualTo(receiver.getName());
+        Assertions.assertThat(findOrder.getShippingInfo().getReceiver().getClphNo()).isEqualTo(receiver.getClphNo());
+        Assertions.assertThat(findOrder.getPaymentLines().get(0).getPaymentType()).isEqualTo(paymentLine.getPaymentType());
 
     }
 }

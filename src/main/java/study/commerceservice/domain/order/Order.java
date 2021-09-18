@@ -4,14 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@SequenceGenerator(
-        name = "ORDER_NO_SEQ",
-        sequenceName = "ORDER_NO_SEQ",
-        initialValue = 100000, allocationSize = 1)
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +19,6 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @GeneratedValue(generator = "ORDER_NO_SEQ", strategy = GenerationType.SEQUENCE)
     private String orderNumber;
     private Long memberId;
     private LocalDateTime orderDate;
@@ -58,7 +53,11 @@ public class Order {
     }
 
     public static Order createOrder(Order order, ShippingInfo shippingInfo, List<PaymentLine> paymentLines) {
-        order.setOrderDate(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        order.setOrderNumber(now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                +"-"+order.getMemberId()
+                +"-"+order.getId());
+        order.setOrderDate(now);
         order.setOrderStatus(OrderStatus.COMP);
         order.setShippingInfo(shippingInfo);
         order.setPaymentLines(paymentLines);
