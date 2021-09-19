@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.commerceservice.domain.order.*;
 import study.commerceservice.repository.OrderRepository;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-@Transactional
+@Transactional(readOnly = true)
 class OrderServiceTest {
 
     @Autowired
@@ -32,7 +33,7 @@ class OrderServiceTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
+    @Transactional
     public void createPreOrder() {
         // given
         List<OrderLine> orderLines = new ArrayList<>();
@@ -65,7 +66,7 @@ class OrderServiceTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
+    @Transactional
     public void createOrder() {
         // given
         List<OrderLine> orderLines = new ArrayList<>();
@@ -80,10 +81,12 @@ class OrderServiceTest {
                 .productOptionId(2L)
                 .build();
 
-        orderLines.add(orderLine1);
-        orderLines.add(orderLine2);
+
         em.persist(orderLine1);
         em.persist(orderLine2);
+
+        orderLines.add(orderLine1);
+        orderLines.add(orderLine2);
 
         Order preOrder = Order.createPreOrder(1L, orderLines);
         orderRepository.save(preOrder);
@@ -107,8 +110,9 @@ class OrderServiceTest {
         em.persist(shippingInfo);
         
         PaymentLine paymentLine = new PaymentLine(PaymentType.COUPON);
-        List<PaymentLine> paymentLines = List.of(paymentLine);
         em.persist(paymentLine);
+        List<PaymentLine> paymentLines = List.of(paymentLine);
+
         
         // when
         Order order = Order.createOrder(preOrder, shippingInfo, paymentLines);
