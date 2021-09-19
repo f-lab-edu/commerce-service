@@ -9,12 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.commerceservice.domain.order.*;
+import study.commerceservice.dto.CheckOutDto;
+import study.commerceservice.dto.PreOrderDto;
 import study.commerceservice.repository.OrderRepository;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional(readOnly = true)
@@ -26,6 +30,9 @@ class OrderServiceTest {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    OrderService orderService;
 
     @BeforeEach
     public void init() {
@@ -60,9 +67,9 @@ class OrderServiceTest {
         Optional<Order> byId = orderRepository.findById(save.getId());
 
         // then
-        Assertions.assertThat(byId.get().getMemberId()).isEqualTo(1L);
-        Assertions.assertThat(byId.get().getOrderStatus()).isEqualTo(OrderStatus.PRE);
-        Assertions.assertThat(byId.get().getTotalPrice()).isEqualTo(35000);
+        assertThat(byId.get().getMemberId()).isEqualTo(1L);
+        assertThat(byId.get().getOrderStatus()).isEqualTo(OrderStatus.PRE);
+        assertThat(byId.get().getTotalPrice()).isEqualTo(35000);
     }
 
     @Test
@@ -122,13 +129,41 @@ class OrderServiceTest {
         System.out.println("findOrder.getOrderNumber() = " + findOrder.getOrderNumber());
         
         // then
-        Assertions.assertThat(findOrder.getOrderStatus()).isEqualTo(OrderStatus.COMP);
-        Assertions.assertThat(findOrder.getOrderNumber()).isEqualTo(order.getOrderNumber());
-        Assertions.assertThat(findOrder.getOrderNumber()).isNotNull();
-        Assertions.assertThat(findOrder.getPaymentLines().get(0).getPaymentType()).isEqualTo(PaymentType.COUPON);
-        Assertions.assertThat(findOrder.getShippingInfo().getReceiver().getName()).isEqualTo(receiver.getName());
-        Assertions.assertThat(findOrder.getShippingInfo().getReceiver().getClphNo()).isEqualTo(receiver.getClphNo());
-        Assertions.assertThat(findOrder.getPaymentLines().get(0).getPaymentType()).isEqualTo(paymentLine.getPaymentType());
+        assertThat(findOrder.getOrderStatus()).isEqualTo(OrderStatus.COMP);
+        assertThat(findOrder.getOrderNumber()).isEqualTo(order.getOrderNumber());
+        assertThat(findOrder.getOrderNumber()).isNotNull();
+        assertThat(findOrder.getPaymentLines().get(0).getPaymentType()).isEqualTo(PaymentType.COUPON);
+        assertThat(findOrder.getShippingInfo().getReceiver().getName()).isEqualTo(receiver.getName());
+        assertThat(findOrder.getShippingInfo().getReceiver().getClphNo()).isEqualTo(receiver.getClphNo());
+        assertThat(findOrder.getPaymentLines().get(0).getPaymentType()).isEqualTo(paymentLine.getPaymentType());
+
+    }
+
+    @Test
+    public void orderServiceCheckoutTest() {
+        //given
+        PreOrderDto preOrderDto1 = new PreOrderDto();
+        preOrderDto1.setProductName("코카콜라제로리뉴얼");
+        preOrderDto1.setOptionName("355ml * 24");
+        preOrderDto1.setPrice(30500);
+        preOrderDto1.setQuantity(5);
+        preOrderDto1.setProductOptionId(15L);
+
+        PreOrderDto preOrderDto2 = new PreOrderDto();
+        preOrderDto2.setProductName("맥북프로 16인치");
+        preOrderDto2.setOptionName("Ram 16GB, SSD 1TB, M1X Processor");
+        preOrderDto2.setPrice(3350000);
+        preOrderDto2.setQuantity(2);
+        preOrderDto2.setProductOptionId(23L);
+
+        List<PreOrderDto> preOrderDtos = new ArrayList<>();
+        preOrderDtos.add(preOrderDto1);
+        preOrderDtos.add(preOrderDto2);
+
+        //when
+        CheckOutDto checkout = orderService.checkout(1L, preOrderDtos);
+
+        System.out.println("checkout = " + checkout);
 
     }
 }
