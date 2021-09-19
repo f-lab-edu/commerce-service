@@ -1,16 +1,13 @@
 package study.commerceservice.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.commerceservice.domain.order.*;
-import study.commerceservice.dto.CheckOutDto;
-import study.commerceservice.dto.PreOrderDto;
+import study.commerceservice.dto.*;
 import study.commerceservice.repository.OrderRepository;
 
 import javax.persistence.EntityManager;
@@ -142,28 +139,74 @@ class OrderServiceTest {
     @Test
     public void orderServiceCheckoutTest() {
         //given
-        PreOrderDto preOrderDto1 = new PreOrderDto();
-        preOrderDto1.setProductName("코카콜라제로리뉴얼");
-        preOrderDto1.setOptionName("355ml * 24");
-        preOrderDto1.setPrice(30500);
-        preOrderDto1.setQuantity(5);
-        preOrderDto1.setProductOptionId(15L);
+        ProductOptionDto productOptionDto1 = new ProductOptionDto();
+        productOptionDto1.setProductName("코카콜라제로리뉴얼");
+        productOptionDto1.setOptionName("355ml * 24");
+        productOptionDto1.setPrice(30500);
+        productOptionDto1.setQuantity(5);
+        productOptionDto1.setProductOptionId(15L);
 
-        PreOrderDto preOrderDto2 = new PreOrderDto();
-        preOrderDto2.setProductName("맥북프로 16인치");
-        preOrderDto2.setOptionName("Ram 16GB, SSD 1TB, M1X Processor");
-        preOrderDto2.setPrice(3350000);
-        preOrderDto2.setQuantity(2);
-        preOrderDto2.setProductOptionId(23L);
+        ProductOptionDto productOptionDto2 = new ProductOptionDto();
+        productOptionDto2.setProductName("맥북프로 16인치");
+        productOptionDto2.setOptionName("Ram 16GB, SSD 1TB, M1X Processor");
+        productOptionDto2.setPrice(3350000);
+        productOptionDto2.setQuantity(2);
+        productOptionDto2.setProductOptionId(23L);
 
-        List<PreOrderDto> preOrderDtos = new ArrayList<>();
-        preOrderDtos.add(preOrderDto1);
-        preOrderDtos.add(preOrderDto2);
+        List<ProductOptionDto> productOptionDtos = new ArrayList<>();
+        productOptionDtos.add(productOptionDto1);
+        productOptionDtos.add(productOptionDto2);
 
         //when
-        CheckOutDto checkout = orderService.checkout(1L, preOrderDtos);
+        CheckOutDto checkout = orderService.checkout(1L, productOptionDtos);
 
         System.out.println("checkout = " + checkout);
+    }
+    
+    @Test
+    public void orderServiceOrderTest() {
+        //given
+        ProductOptionDto productOptionDto1 = new ProductOptionDto();
+        productOptionDto1.setProductName("코카콜라제로리뉴얼");
+        productOptionDto1.setOptionName("355ml * 24");
+        productOptionDto1.setPrice(30500);
+        productOptionDto1.setQuantity(5);
+        productOptionDto1.setProductOptionId(15L);
 
+        ProductOptionDto productOptionDto2 = new ProductOptionDto();
+        productOptionDto2.setProductName("맥북프로 16인치");
+        productOptionDto2.setOptionName("Ram 16GB, SSD 1TB, M1X Processor");
+        productOptionDto2.setPrice(3350000);
+        productOptionDto2.setQuantity(2);
+        productOptionDto2.setProductOptionId(23L);
+
+        List<ProductOptionDto> productOptionDtos = new ArrayList<>();
+        productOptionDtos.add(productOptionDto1);
+        productOptionDtos.add(productOptionDto2);
+
+        CheckOutDto checkout = orderService.checkout(1L, productOptionDtos);
+
+        ShippingInfoDto shippingInfoDto = new ShippingInfoDto();
+        shippingInfoDto.setZipcode("10531");
+        shippingInfoDto.setAddress1("경기도 고양시 고양고양이");
+        shippingInfoDto.setAddress2("캣타워 304562층 33333호");
+        shippingInfoDto.setMessage("일회용 수저는 빼주세요");
+        shippingInfoDto.setName("삼순이");
+        shippingInfoDto.setClphNo("01033333333");
+        
+        List<PaymentLineDto> paymentLineDtos = new ArrayList<>();
+        
+        PaymentLineDto paymentLineDto1 = new PaymentLineDto();
+        paymentLineDto1.setPaymentType(PaymentType.COUPON);
+        
+        PaymentLineDto paymentLineDto2 = new PaymentLineDto();
+        paymentLineDto2.setPaymentType(PaymentType.ACCOUNT);
+        
+        paymentLineDtos.add(paymentLineDto1);
+        paymentLineDtos.add(paymentLineDto2);
+
+        OrderDto order = orderService.order(checkout.getOrderId(), shippingInfoDto, paymentLineDtos, productOptionDtos);
+
+        System.out.println("order.toString() = " + order);
     }
 }

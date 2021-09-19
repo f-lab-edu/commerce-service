@@ -8,6 +8,6 @@ import java.util.List;
 public class CheckOutDto {
 
     private Long orderId;
-    private List<PreOrderDto> preOrderDtos;
+    private List<ProductOptionDto> productOptionDtos;
     private Long totalPrice;
 }

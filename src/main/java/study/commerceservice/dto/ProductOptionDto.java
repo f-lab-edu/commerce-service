@@ -4,7 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 
 @Data
-public class PreOrderDto {
+public class ProductOptionDto {
 
     @NotNull
     private String productName;
