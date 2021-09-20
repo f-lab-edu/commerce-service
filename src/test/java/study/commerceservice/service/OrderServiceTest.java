@@ -160,7 +160,17 @@ class OrderServiceTest {
         //when
         CheckOutDto checkout = orderService.checkout(1L, productOptionDtos);
 
+        // then
         System.out.println("checkout = " + checkout);
+        assertThat(checkout.getTotalPrice()).isEqualTo(30500 * 5 + 3350000 * 2);
+        assertThat(checkout.getProductOptionDtos().get(0).getOptionName()).isEqualTo(productOptionDto1.getOptionName());
+        assertThat(checkout.getProductOptionDtos().get(0).getProductName()).isEqualTo(productOptionDto1.getProductName());
+        assertThat(checkout.getProductOptionDtos().get(0).getPrice()).isEqualTo(productOptionDto1.getPrice());
+        assertThat(checkout.getProductOptionDtos().get(0).getQuantity()).isEqualTo(productOptionDto1.getQuantity());
+        assertThat(checkout.getProductOptionDtos().get(1).getOptionName()).isEqualTo(productOptionDto2.getOptionName());
+        assertThat(checkout.getProductOptionDtos().get(1).getProductName()).isEqualTo(productOptionDto2.getProductName());
+        assertThat(checkout.getProductOptionDtos().get(1).getPrice()).isEqualTo(productOptionDto2.getPrice());
+        assertThat(checkout.getProductOptionDtos().get(1).getQuantity()).isEqualTo(productOptionDto2.getQuantity());
     }
     
     @Test
@@ -205,8 +215,22 @@ class OrderServiceTest {
         paymentLineDtos.add(paymentLineDto1);
         paymentLineDtos.add(paymentLineDto2);
 
+        // when
         OrderDto order = orderService.order(checkout.getOrderId(), shippingInfoDto, paymentLineDtos, productOptionDtos);
 
+        // then
         System.out.println("order.toString() = " + order);
+        assertThat(order.getTotalPrice()).isEqualTo(30500 * 5 + 3350000 * 2);
+        assertThat(order.getProductOptionDtos().get(0).getProductName()).isEqualTo(productOptionDto1.getProductName());
+        assertThat(order.getProductOptionDtos().get(0).getOptionName()).isEqualTo(productOptionDto1.getOptionName());
+        assertThat(order.getProductOptionDtos().get(0).getPrice()).isEqualTo(productOptionDto1.getPrice());
+        assertThat(order.getProductOptionDtos().get(0).getQuantity()).isEqualTo(productOptionDto1.getQuantity());
+        assertThat(order.getPaymentLineDtos().get(0).getPaymentType()).isEqualTo(paymentLineDto1.getPaymentType());
+        assertThat(order.getShippingInfoDto().getName()).isEqualTo(shippingInfoDto.getName());
+        assertThat(order.getShippingInfoDto().getClphNo()).isEqualTo(shippingInfoDto.getClphNo());
+        assertThat(order.getShippingInfoDto().getAddress1()).isEqualTo(shippingInfoDto.getAddress1());
+        assertThat(order.getShippingInfoDto().getAddress2()).isEqualTo(shippingInfoDto.getAddress2());
+        assertThat(order.getShippingInfoDto().getZipcode()).isEqualTo(shippingInfoDto.getZipcode());
+        assertThat(order.getShippingInfoDto().getMessage()).isEqualTo(shippingInfoDto.getMessage());
     }
 }
