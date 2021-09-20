@@ -1,9 +1,11 @@
 package study.commerceservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
+@Builder
 @Data
 public class ShippingInfoDto {
 
