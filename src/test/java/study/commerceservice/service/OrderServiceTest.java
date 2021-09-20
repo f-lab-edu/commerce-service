@@ -163,7 +163,6 @@ class OrderServiceTest {
         CheckOutDto checkout = orderService.checkout(1L, productOptionDtos);
 
         // then
-        System.out.println("checkout = " + checkout);
         assertThat(checkout.getTotalPrice()).isEqualTo(30500 * 5 + 3350000 * 2);
         assertThat(checkout.getProductOptionDtos().get(0).getPrice()).isEqualTo(productOptionDto1.getPrice());
         assertThat(checkout.getProductOptionDtos().get(0).getQuantity()).isEqualTo(productOptionDto1.getQuantity());
@@ -220,7 +219,7 @@ class OrderServiceTest {
         OrderDto order = orderService.order(checkout.getOrderId(), shippingInfoDto, paymentLineDtos);
 
         // then
-        System.out.println("order.toString() = " + order);
+        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.COMP);
         assertThat(order.getTotalPrice()).isEqualTo(30500 * 5 + 3350000 * 2);
         assertThat(order.getProductOptionDtos().get(0).getPrice()).isEqualTo(productOptionDto1.getPrice());
         assertThat(order.getProductOptionDtos().get(0).getQuantity()).isEqualTo(productOptionDto1.getQuantity());
@@ -231,5 +230,58 @@ class OrderServiceTest {
         assertThat(order.getShippingInfoDto().getAddress2()).isEqualTo(shippingInfoDto.getAddress2());
         assertThat(order.getShippingInfoDto().getZipcode()).isEqualTo(shippingInfoDto.getZipcode());
         assertThat(order.getShippingInfoDto().getMessage()).isEqualTo(shippingInfoDto.getMessage());
+    }
+
+    @Test
+    public void orderServiceCancelTest() {
+        //given
+        ProductOptionDto productOptionDto1 = ProductOptionDto.builder()
+                .productName("코카콜라제로리뉴얼")
+                .optionName("355ml * 24")
+                .price(30500)
+                .quantity(5)
+                .productOptionId(15L)
+                .build();
+
+        ProductOptionDto productOptionDto2 = ProductOptionDto.builder()
+                .productName("맥북프로 16인치")
+                .optionName("Ram 16GB, SSD 1TB, M1X Processor")
+                .price(3350000)
+                .quantity(2)
+                .productOptionId(23L)
+                .build();
+
+        List<ProductOptionDto> productOptionDtos = new ArrayList<>();
+        productOptionDtos.add(productOptionDto1);
+        productOptionDtos.add(productOptionDto2);
+
+        CheckOutDto checkout = orderService.checkout(1L, productOptionDtos);
+
+        ShippingInfoDto shippingInfoDto = ShippingInfoDto.builder()
+                .zipcode("10531")
+                .address1("경기도 고양시 고양고양이")
+                .address2("캣타워 304562층 33333호")
+                .message("일회용 수저는 빼주세요")
+                .name("삼순이")
+                .clphNo("01033333333")
+                .build();
+
+        List<PaymentLineDto> paymentLineDtos = new ArrayList<>();
+
+        PaymentLineDto paymentLineDto1 = new PaymentLineDto();
+        paymentLineDto1.setPaymentType(PaymentType.COUPON);
+
+        PaymentLineDto paymentLineDto2 = new PaymentLineDto();
+        paymentLineDto2.setPaymentType(PaymentType.ACCOUNT);
+
+        paymentLineDtos.add(paymentLineDto1);
+        paymentLineDtos.add(paymentLineDto2);
+        OrderDto order = orderService.order(checkout.getOrderId(), shippingInfoDto, paymentLineDtos);
+
+        // when
+        OrderDto cancel = orderService.cancel(order.getOrderId());
+
+        // then
+        assertThat(cancel.getOrderStatus()).isEqualTo(OrderStatus.CANCEL);
     }
 }

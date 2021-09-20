@@ -34,6 +34,7 @@ public class OrderAssembler {
                 .paymentLineDtos(paymentLineDtos)
                 .shippingInfoDto(ShippingInfoAssembler.toDto(order.getShippingInfo()))
                 .totalPrice(order.getTotalPrice())
+                .orderStatus(order.getOrderStatus())
                 .build();
     }
 

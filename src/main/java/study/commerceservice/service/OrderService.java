@@ -58,4 +58,17 @@ public class OrderService {
         return OrderAssembler.toOrderDto(order);
     }
 
+    @Transactional
+    public OrderDto cancel(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
+
+        order.cancel(order);
+
+        // TODO(product 수량 +)
+        // TODO(Payment 환불처리)
+
+        return OrderAssembler.toOrderDto(order);
+    }
+
 }

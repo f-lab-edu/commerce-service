@@ -36,4 +36,10 @@ public class OrderController {
         orderService.order(orderId, shippingInfoDto, paymentLineDtos);
         return "redirect:/order/orderForm";
     }
+
+    @PostMapping("/orderCencel")
+    public String cancel(@RequestParam("orderId") Long orderId) {
+        orderService.cancel(orderId);
+        return "redirect:/order/cancelForm";
+    }
 }

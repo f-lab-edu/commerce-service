@@ -2,6 +2,7 @@ package study.commerceservice.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import study.commerceservice.domain.order.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,4 +18,5 @@ public class OrderDto {
     private List<PaymentLineDto> paymentLineDtos;
     private ShippingInfoDto shippingInfoDto;
     private long totalPrice;
+    private OrderStatus orderStatus;
 }

@@ -65,4 +65,10 @@ public class Order {
         return order;
     }
 
+    public void cancel(Order order) {
+        //TODO (DeliveryStatus 체크)
+
+        order.setOrderStatus(OrderStatus.CANCEL);
+        order.setModDate(LocalDateTime.now());
+    }
 }
