@@ -1,8 +1,10 @@
 package study.commerceservice.dto;
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class ProductOptionDto {
 

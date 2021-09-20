@@ -139,19 +139,21 @@ class OrderServiceTest {
     @Test
     public void orderServiceCheckoutTest() {
         //given
-        ProductOptionDto productOptionDto1 = new ProductOptionDto();
-        productOptionDto1.setProductName("코카콜라제로리뉴얼");
-        productOptionDto1.setOptionName("355ml * 24");
-        productOptionDto1.setPrice(30500);
-        productOptionDto1.setQuantity(5);
-        productOptionDto1.setProductOptionId(15L);
+        ProductOptionDto productOptionDto1 = ProductOptionDto.builder()
+                .productName("코카콜라제로리뉴얼")
+                .optionName("355ml * 24")
+                .price(30500)
+                .quantity(5)
+                .productOptionId(15L)
+                .build();
 
-        ProductOptionDto productOptionDto2 = new ProductOptionDto();
-        productOptionDto2.setProductName("맥북프로 16인치");
-        productOptionDto2.setOptionName("Ram 16GB, SSD 1TB, M1X Processor");
-        productOptionDto2.setPrice(3350000);
-        productOptionDto2.setQuantity(2);
-        productOptionDto2.setProductOptionId(23L);
+        ProductOptionDto productOptionDto2 = ProductOptionDto.builder()
+                .productName("맥북프로 16인치")
+                .optionName("Ram 16GB, SSD 1TB, M1X Processor")
+                .price(3350000)
+                .quantity(2)
+                .productOptionId(23L)
+                .build();
 
         List<ProductOptionDto> productOptionDtos = new ArrayList<>();
         productOptionDtos.add(productOptionDto1);
@@ -163,12 +165,8 @@ class OrderServiceTest {
         // then
         System.out.println("checkout = " + checkout);
         assertThat(checkout.getTotalPrice()).isEqualTo(30500 * 5 + 3350000 * 2);
-        assertThat(checkout.getProductOptionDtos().get(0).getOptionName()).isEqualTo(productOptionDto1.getOptionName());
-        assertThat(checkout.getProductOptionDtos().get(0).getProductName()).isEqualTo(productOptionDto1.getProductName());
         assertThat(checkout.getProductOptionDtos().get(0).getPrice()).isEqualTo(productOptionDto1.getPrice());
         assertThat(checkout.getProductOptionDtos().get(0).getQuantity()).isEqualTo(productOptionDto1.getQuantity());
-        assertThat(checkout.getProductOptionDtos().get(1).getOptionName()).isEqualTo(productOptionDto2.getOptionName());
-        assertThat(checkout.getProductOptionDtos().get(1).getProductName()).isEqualTo(productOptionDto2.getProductName());
         assertThat(checkout.getProductOptionDtos().get(1).getPrice()).isEqualTo(productOptionDto2.getPrice());
         assertThat(checkout.getProductOptionDtos().get(1).getQuantity()).isEqualTo(productOptionDto2.getQuantity());
     }
@@ -176,19 +174,21 @@ class OrderServiceTest {
     @Test
     public void orderServiceOrderTest() {
         //given
-        ProductOptionDto productOptionDto1 = new ProductOptionDto();
-        productOptionDto1.setProductName("코카콜라제로리뉴얼");
-        productOptionDto1.setOptionName("355ml * 24");
-        productOptionDto1.setPrice(30500);
-        productOptionDto1.setQuantity(5);
-        productOptionDto1.setProductOptionId(15L);
+        ProductOptionDto productOptionDto1 = ProductOptionDto.builder()
+                .productName("코카콜라제로리뉴얼")
+                .optionName("355ml * 24")
+                .price(30500)
+                .quantity(5)
+                .productOptionId(15L)
+                .build();
 
-        ProductOptionDto productOptionDto2 = new ProductOptionDto();
-        productOptionDto2.setProductName("맥북프로 16인치");
-        productOptionDto2.setOptionName("Ram 16GB, SSD 1TB, M1X Processor");
-        productOptionDto2.setPrice(3350000);
-        productOptionDto2.setQuantity(2);
-        productOptionDto2.setProductOptionId(23L);
+        ProductOptionDto productOptionDto2 = ProductOptionDto.builder()
+                .productName("맥북프로 16인치")
+                .optionName("Ram 16GB, SSD 1TB, M1X Processor")
+                .price(3350000)
+                .quantity(2)
+                .productOptionId(23L)
+                .build();
 
         List<ProductOptionDto> productOptionDtos = new ArrayList<>();
         productOptionDtos.add(productOptionDto1);
@@ -196,14 +196,15 @@ class OrderServiceTest {
 
         CheckOutDto checkout = orderService.checkout(1L, productOptionDtos);
 
-        ShippingInfoDto shippingInfoDto = new ShippingInfoDto();
-        shippingInfoDto.setZipcode("10531");
-        shippingInfoDto.setAddress1("경기도 고양시 고양고양이");
-        shippingInfoDto.setAddress2("캣타워 304562층 33333호");
-        shippingInfoDto.setMessage("일회용 수저는 빼주세요");
-        shippingInfoDto.setName("삼순이");
-        shippingInfoDto.setClphNo("01033333333");
-        
+        ShippingInfoDto shippingInfoDto = ShippingInfoDto.builder()
+                .zipcode("10531")
+                .address1("경기도 고양시 고양고양이")
+                .address2("캣타워 304562층 33333호")
+                .message("일회용 수저는 빼주세요")
+                .name("삼순이")
+                .clphNo("01033333333")
+                .build();
+
         List<PaymentLineDto> paymentLineDtos = new ArrayList<>();
         
         PaymentLineDto paymentLineDto1 = new PaymentLineDto();
@@ -216,13 +217,11 @@ class OrderServiceTest {
         paymentLineDtos.add(paymentLineDto2);
 
         // when
-        OrderDto order = orderService.order(checkout.getOrderId(), shippingInfoDto, paymentLineDtos, productOptionDtos);
+        OrderDto order = orderService.order(checkout.getOrderId(), shippingInfoDto, paymentLineDtos);
 
         // then
         System.out.println("order.toString() = " + order);
         assertThat(order.getTotalPrice()).isEqualTo(30500 * 5 + 3350000 * 2);
-        assertThat(order.getProductOptionDtos().get(0).getProductName()).isEqualTo(productOptionDto1.getProductName());
-        assertThat(order.getProductOptionDtos().get(0).getOptionName()).isEqualTo(productOptionDto1.getOptionName());
         assertThat(order.getProductOptionDtos().get(0).getPrice()).isEqualTo(productOptionDto1.getPrice());
         assertThat(order.getProductOptionDtos().get(0).getQuantity()).isEqualTo(productOptionDto1.getQuantity());
         assertThat(order.getPaymentLineDtos().get(0).getPaymentType()).isEqualTo(paymentLineDto1.getPaymentType());

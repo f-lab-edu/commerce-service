@@ -32,9 +32,8 @@ public class OrderController {
     @PostMapping("/order")
     public String order(@RequestParam("orderId") Long orderId,
                         @Valid @ModelAttribute("shippingInfo") ShippingInfoDto shippingInfoDto,
-                        @Valid @ModelAttribute("paymentLines") List<PaymentLineDto> paymentLineDtos,
-                        @Valid @ModelAttribute("productOptions") List<ProductOptionDto> productOptionDtos) {
-        orderService.order(orderId, shippingInfoDto, paymentLineDtos, productOptionDtos);
+                        @Valid @ModelAttribute("paymentLines") List<PaymentLineDto> paymentLineDtos) {
+        orderService.order(orderId, shippingInfoDto, paymentLineDtos);
         return "redirect:/order/orderForm";
     }
 }
