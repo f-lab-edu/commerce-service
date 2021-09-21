@@ -4,13 +4,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.commerceservice.common.CommonTimeEntity;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Option {
+public class Option extends CommonTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "option_id")

@@ -1,6 +1,7 @@
 package study.commerceservice.domain.product;
 
 import lombok.*;
+import study.commerceservice.common.CommonTimeEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Product {
+public class Product extends CommonTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "product_id")

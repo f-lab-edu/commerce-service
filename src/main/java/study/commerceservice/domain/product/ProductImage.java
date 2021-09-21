@@ -1,13 +1,14 @@
 package study.commerceservice.domain.product;
 
 import lombok.*;
+import study.commerceservice.common.CommonTimeEntity;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ProductImage {
+public class ProductImage extends CommonTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "product_image_id")
