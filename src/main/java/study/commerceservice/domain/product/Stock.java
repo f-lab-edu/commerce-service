@@ -3,6 +3,7 @@ package study.commerceservice.domain.product;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.commerceservice.common.CommonTimeEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Stock {
+public class Stock extends CommonTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "stock_id")
