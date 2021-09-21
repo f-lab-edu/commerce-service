@@ -34,7 +34,7 @@ public class Order {
     @JoinColumn(name = "shipping_info_id")
     private ShippingInfo shippingInfo;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_line_id")
     private List<PaymentLine> paymentLines = new ArrayList<>();
 
