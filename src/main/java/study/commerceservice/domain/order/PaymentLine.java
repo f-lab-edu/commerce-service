@@ -3,13 +3,14 @@ package study.commerceservice.domain.order;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.commerceservice.common.CommonTimeEntity;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentLine {
+public class PaymentLine extends CommonTimeEntity {
 
     @Id
     @GeneratedValue

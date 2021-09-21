@@ -4,13 +4,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.commerceservice.common.CommonTimeEntity;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ShippingInfo {
+public class ShippingInfo extends CommonTimeEntity {
 
     @Id
     @GeneratedValue
